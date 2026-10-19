@@ -2,12 +2,12 @@
     <img width="25%" height="25%" alt="logo2" src="https://github.com/user-attachments/assets/5596a357-61c3-471c-9a1e-b8c3d6de33c8" />
 </p>
 
-<h1 align="center"> Vue-After-Free </h1>
+<h1 align="center"> Vue After Free: Multi-Payload </h1>
 <p  align="center">
-    A PlayStation Vue userland code execution exploit for Playstation 4.
+  A PlayStation Vue userland exploit for PS4, with a payload menu that can discover and launch multiple payload files.
 </p>
 
-
+This repository builds on Vue After Free and adds multi-payload support. See [Payloads](#payloads) for supported file types, scan locations, and automatic loading.
 
 > [!NOTE]
 > **Need help or having issues?** [Join the discord](https://discord.gg/asBgEtjjVt)
@@ -53,7 +53,7 @@ If the app crashes the exploit failed, shutdown the console and try again.
 If a kernel panic occurred you may need to press the power button on your console twice, then retry running the exploit.
 
 **Q: How can I run a payload?**
-Closing and reopening Vue is required between running JS payloads, but .bin or .elf payloads can be run one after the other. Select the payload from the UI in the Payload Menu.
+Open the Payload Menu and select a file. The menu lists `.js`, `.bin`, and `.elf` files from its scan locations. Select one file at a time; close and reopen Vue before running another JavaScript payload. Binary payloads can be run one after another.
 
 **Q: Can I run the jailbreak offline?**
 No. PS Vue requires any form of network connection. Internet is not required, so you can use any network like home WiFi, a hotspot from your mobile phone, a network from a microcontroller like ESP32, or an Ethernet network from a repurposed PPPwn device.
@@ -87,14 +87,13 @@ Lastly Vue has a fun UI with cats and Theme support for you to tinker with along
   * Fake or legit activated PS4 user account.
   * FTP access to the console.
   * USB flash drive.
-
-  * PlayStation Vue 1.01 base and 1.24 patch.(Referred to as "PS Vue or Vue" later in the guide). [Download](https://www.mediafire.com/file/45owcabezln2ykm/CUSA00960.zip/file)
+  * PlayStation Vue 1.01 base and 1.24 patch. [Download](https://www.mediafire.com/file/45owcabezln2ykm/CUSA00960.zip/file)
 
 ### For Non-Jailbroken PS4 Extended Storage and Save Resign
-  * Internet connection on the PS4. 
+  * Internet connection on the PS4.
   * Fake or legit activated PS4 user account.
   * 256GB or above USB/HDD/SSD. Any drive larger than 256GB will also work.
-  * A way to resign a save file. A jailbroken PS4 or a Discord bot or Save Wizard.
+  * A way to resign a save file, such as a jailbroken PS4, a Discord bot, or Save Wizard.
   > [!IMPORTANT]
   > You will resign the save file that installs the exploit data through the internet.
 
@@ -219,7 +218,9 @@ If Vue updated or you accidentally deleted it.
   5. Rebuild the FPKG database by following the guide here [Rebuilding FPKG Database](https://consolemods.org/wiki/PS4:Rebuilding_FPKG_Database)
 
 # Payloads
-Vue After Free comes preloaded with some payloads.
+Vue After Free includes a payload menu and several bundled payloads. The menu scans `/download0/payloads` for `.js`, `.bin`, and `.elf` files. After the console is jailbroken, it also scans `/data/payloads`.
+
+Place additional files in one of those folders and reopen the Payload Menu to find them. Select a single file in the menu to run it. JavaScript payloads are included in the current Vue session; binary payloads are loaded by the binary loader.
 
 > [!IMPORTANT]
 > The np-fake-signin should not be run on a real psn account.
@@ -242,8 +243,19 @@ Music can be enabled or disabled.
 The Config menu also lets you select a GoldHEN version. Put each `payload.bin` in `/data/payloadlist/v2.4b18.8/` through `/data/payloadlist/v2.4b18.12/`; the selected version is loaded after the jailbreak. If that file is missing, the loader falls back to the existing USB, `/data/payload.bin`, and network loader paths.   
 
 # Automatic Payloads
-In config.json you can add .bin or .elf files to be loaded automatically on kernel exploit completion. HEN or GoldHEN should not be added there as they are already loaded via USB or from the /data/ directory automatically.
-Example: `/mnt/sandbox/download/CUSA00960/payloads/kernel_dumper.bin`
+To load multiple binary payloads automatically, add their full paths to the top-level `payloads` array in `config.json`. The loader processes the entries in array order. For example:
+
+```json
+{
+  "config": {},
+  "payloads": [
+    "/mnt/sandbox/download/CUSA00960/payloads/kernel_dumper.bin",
+    "/mnt/sandbox/download/CUSA00960/payloads/example.elf"
+  ]
+}
+```
+
+Use `.bin` or `.elf` files here. Do not add HEN or GoldHEN to this list; those are handled separately by the loader.
 
 # NP-Fake-SignIn
 The np-fake-signin payload gets rid of the first PS Vue pop-up asking you to sign into PSN. It can be launched from the payloads menu.
@@ -274,5 +286,3 @@ Themes can be added my simply copying the folder to `/download0/themes/` the def
 - [elfldr.elf](https://github.com/ps4-payload-dev/elfldr) by John Törnblom
 - [AIOfix_network.elf](https://github.com/Gezine/BD-JB-1250/blob/main/payloads/lapse/src/org/bdj/external/aiofix_network.c) by Gezine
 - [np-fake-signin](https://github.com/earthonion/np-fake-signin) by earthonion
-#   v u e - a f t e r - f r e e - m u l t i p a y l o a d  
- 
