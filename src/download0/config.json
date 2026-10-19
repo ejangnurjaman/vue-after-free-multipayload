@@ -1,0 +1,13 @@
+{
+    "config": {
+        "autolapse": false,
+        "autopoop": false,
+        "autoclose": false,
+        "autoclose_delay": 3000,
+        "music": true,
+        "jb_behavior": 0,
+        "theme": "default",
+        "goldhen_version": "v2.4b18.8"
+    },
+    "payloads": []
+}
